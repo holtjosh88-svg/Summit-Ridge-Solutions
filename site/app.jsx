@@ -6,6 +6,18 @@ const { useState, useEffect } = React;
 
 const BRAND = "Summit Ridge Solutions";
 
+/* ── n8n webhook — replace with your actual webhook URL ──────
+   In n8n: Trigger node → Webhook → copy the Production URL here */
+const N8N_WEBHOOK_URL = "https://jgholt.app.n8n.cloud/webhook-test/0e02cad8-27a8-4ee8-8eb4-78c30fb297f9";
+
+const SERVICES = [
+  { id: "website",  label: "Website Build" },
+  { id: "chatbot",  label: "AI Chatbot" },
+  { id: "workflow", label: "Workflow Automation" },
+  { id: "quote",    label: "Quote Automation" },
+  { id: "other",    label: "Other" },
+];
+
 const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
   "accent": "#F04E2C",
   "bg": "#F3EFEA",
@@ -441,6 +453,213 @@ function NotionKanban() {
   );
 }
 
+/* ── Contact / Inquiry form ──────────────────────────────── */
+function ContactForm() {
+  const [fields, setFields] = useState({
+    fullName: "", businessName: "", email: "",
+    phone: "", website: "", services: [],
+    description: "", contactMethod: "Email",
+  });
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
+
+  const set = (key, val) => {
+    setFields(f => ({ ...f, [key]: val }));
+    if (errors[key]) setErrors(e => ({ ...e, [key]: null }));
+  };
+
+  const toggleService = (id) => {
+    setFields(f => ({
+      ...f,
+      services: f.services.includes(id)
+        ? f.services.filter(s => s !== id)
+        : [...f.services, id],
+    }));
+    if (errors.services) setErrors(e => ({ ...e, services: null }));
+  };
+
+  const validate = () => {
+    const errs = {};
+    if (!fields.fullName.trim())    errs.fullName    = "Full name is required";
+    if (!fields.businessName.trim()) errs.businessName = "Business name is required";
+    if (!fields.email.trim()) {
+      errs.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
+      errs.email = "Enter a valid email address";
+    }
+    if (fields.services.length === 0) errs.services   = "Select at least one service";
+    if (!fields.description.trim())  errs.description = "Please describe your project";
+    return errs;
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const errs = validate();
+    if (Object.keys(errs).length > 0) { setErrors(errs); return; }
+    setLoading(true);
+    setSubmitError(null);
+    try {
+      const res = await fetch(N8N_WEBHOOK_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName:      fields.fullName,
+          businessName:  fields.businessName,
+          email:         fields.email,
+          phone:         fields.phone  || null,
+          website:       fields.website || null,
+          services:      fields.services,
+          description:   fields.description,
+          contactMethod: fields.contactMethod,
+          submittedAt:   new Date().toISOString(),
+          source:        "website-inquiry-form",
+        }),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      setSubmitted(true);
+    } catch {
+      setSubmitError("Something went wrong — please try again or email us directly.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (submitted) {
+    return (
+      <div className="cf-success">
+        <div className="cf-success-icon">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" strokeWidth="2.5"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </div>
+        <h3>Request received</h3>
+        <p>Thanks, {fields.fullName.split(" ")[0]}. We'll be in touch within 24 hours with a scope and a fixed price.</p>
+      </div>
+    );
+  }
+
+  return (
+    <form className="cf-form" onSubmit={handleSubmit} noValidate>
+      <div className="cf-row">
+        <div className={`cf-field${errors.fullName ? " cf-field-err" : ""}`}>
+          <label className="cf-label">Full name <span className="cf-req">*</span></label>
+          <input type="text" className="cf-input" value={fields.fullName}
+            onChange={e => set("fullName", e.target.value)}
+            placeholder="Jane Smith" autoComplete="name"/>
+          {errors.fullName && <span className="cf-error">{errors.fullName}</span>}
+        </div>
+        <div className={`cf-field${errors.businessName ? " cf-field-err" : ""}`}>
+          <label className="cf-label">Business name <span className="cf-req">*</span></label>
+          <input type="text" className="cf-input" value={fields.businessName}
+            onChange={e => set("businessName", e.target.value)}
+            placeholder="Acme Corp" autoComplete="organization"/>
+          {errors.businessName && <span className="cf-error">{errors.businessName}</span>}
+        </div>
+      </div>
+      <div className="cf-row">
+        <div className={`cf-field${errors.email ? " cf-field-err" : ""}`}>
+          <label className="cf-label">Email <span className="cf-req">*</span></label>
+          <input type="email" className="cf-input" value={fields.email}
+            onChange={e => set("email", e.target.value)}
+            placeholder="jane@acme.com" autoComplete="email"/>
+          {errors.email && <span className="cf-error">{errors.email}</span>}
+        </div>
+        <div className="cf-field">
+          <label className="cf-label">Phone <span className="cf-opt">optional</span></label>
+          <input type="tel" className="cf-input" value={fields.phone}
+            onChange={e => set("phone", e.target.value)}
+            placeholder="+1 (555) 000-0000" autoComplete="tel"/>
+        </div>
+      </div>
+      <div className="cf-field">
+        <label className="cf-label">Existing website <span className="cf-opt">optional</span></label>
+        <input type="url" className="cf-input" value={fields.website}
+          onChange={e => set("website", e.target.value)}
+          placeholder="https://yoursite.com" autoComplete="url"/>
+      </div>
+      <div className={`cf-field${errors.services ? " cf-field-err" : ""}`}>
+        <label className="cf-label">Services <span className="cf-req">*</span></label>
+        <div className="cf-pills">
+          {SERVICES.map(s => (
+            <button key={s.id} type="button"
+              className={`cf-pill${fields.services.includes(s.id) ? " cf-pill-on" : ""}`}
+              onClick={() => toggleService(s.id)}>
+              {s.label}
+            </button>
+          ))}
+        </div>
+        {errors.services && <span className="cf-error">{errors.services}</span>}
+      </div>
+      <div className={`cf-field${errors.description ? " cf-field-err" : ""}`}>
+        <label className="cf-label">Project description <span className="cf-req">*</span></label>
+        <textarea className="cf-input cf-textarea" value={fields.description}
+          onChange={e => set("description", e.target.value)}
+          placeholder="Tell us what you're building, what's not working yet, and what success looks like…"
+          rows={5}/>
+        {errors.description && <span className="cf-error">{errors.description}</span>}
+      </div>
+      <div className="cf-field">
+        <label className="cf-label">Preferred contact method</label>
+        <div className="cf-pills">
+          {["Email","Phone","Either"].map(m => (
+            <button key={m} type="button"
+              className={`cf-pill${fields.contactMethod === m ? " cf-pill-on" : ""}`}
+              onClick={() => set("contactMethod", m)}>
+              {m}
+            </button>
+          ))}
+        </div>
+      </div>
+      {submitError && <div className="cf-submit-error">{submitError}</div>}
+      <button type="submit" className={`btn cf-submit-btn${loading ? " cf-loading" : ""}`} disabled={loading}>
+        <span>{loading ? "Sending…" : "Send inquiry"}</span>
+        {loading
+          ? <span className="arr cf-spinner"/>
+          : <span className="arr"><Ico.arrowUR/></span>
+        }
+      </button>
+    </form>
+  );
+}
+
+function Contact() {
+  return (
+    <section id="contact">
+      <div className="wrap">
+        <div className="cf-layout">
+          <div className="cf-left">
+            <Eyebrow>Start a project</Eyebrow>
+            <h2 className="display-md" style={{marginTop: 14}}>Tell us what<br/>you're building</h2>
+            <p className="cf-lede">
+              Fill in the form and you'll hear back within 24 hours — clear scope,
+              fixed price, no slide decks, no surprise invoices.
+            </p>
+            <div className="cf-promises">
+              {[
+                "Response within 24 hours",
+                "Fixed-price quote after scoping",
+                "No lock-in contracts",
+              ].map(p => (
+                <div className="cf-promise" key={p}>
+                  <span className="cf-check">
+                    <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="#fff" strokeWidth="2.5"><path d="M5 13l4 4L19 7" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                  </span>
+                  {p}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="cf-right">
+            <div className="cf-card">
+              <ContactForm/>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ── Sections ────────────────────────────────────────────── */
 function Nav() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -458,9 +677,10 @@ function Nav() {
           <a href="#services">Services</a>
           <a href="#process">Process</a>
           <a href="#faq">FAQ</a>
+          <a href="#contact">Contact</a>
         </nav>
         <div className="nav-cta">
-          <Btn>Start a project</Btn>
+          <Btn as="a" href="#contact">Start a project</Btn>
         </div>
         <button
           className={`nav-burger${menuOpen ? " open" : ""}`}
@@ -477,7 +697,8 @@ function Nav() {
         <a href="#services" onClick={close}>Services</a>
         <a href="#process" onClick={close}>Process</a>
         <a href="#faq" onClick={close}>FAQ</a>
-        <Btn onClick={close}>Start a project</Btn>
+        <a href="#contact" onClick={close}>Contact</a>
+        <Btn as="a" href="#contact" onClick={close}>Start a project</Btn>
       </div>
     </header>
   );
@@ -529,7 +750,7 @@ function Hero() {
                 Hand-built websites and AI automations that turn forms into
                 fulfilled work — without anyone copy-pasting into a spreadsheet.
               </p>
-              <Btn>Book an intro call</Btn>
+              <Btn as="a" href="#contact">Book an intro call</Btn>
             </div>
           </div>
         </div>
@@ -642,7 +863,7 @@ function Services() {
             Every project ships with a system underneath — forms that route to Notion,
             replies drafted by AI, quotes generated on intake.
             <div className="cta-line">
-              <Btn>Get a quote</Btn>
+              <Btn as="a" href="#contact">Get a quote</Btn>
             </div>
           </div>
         </div>
@@ -667,7 +888,7 @@ function Why() {
               <Eyebrow>Why teams pick us</Eyebrow>
               <h2 className="display-md" style={{marginTop: 14}}>Why companies hire {BRAND} to wire up their intake</h2>
             </div>
-            <Btn variant="primary">Get a quote</Btn>
+            <Btn variant="primary" as="a" href="#contact">Get a quote</Btn>
           </div>
           <div className="why-right">
             {items.map((it, i) => (
@@ -790,7 +1011,7 @@ function FinalCta() {
                 You'll have a scoped quote within 24 hours.
               </p>
             </div>
-            <Btn variant="primary">Book intro call</Btn>
+            <Btn variant="primary" as="a" href="#contact">Book intro call</Btn>
           </div>
           <div className="final-right"/>
         </div>
@@ -954,6 +1175,7 @@ function App() {
         <Why/>
         <Testimonials/>
         <FAQ/>
+        <Contact/>
         <FinalCta/>
       </main>
       <Footer/>
