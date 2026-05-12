@@ -918,7 +918,7 @@ h1, h2, h3, h4 { margin: 0; font-weight: 600; letter-spacing: -0.02em; }
   display: grid; place-items: center;
   font-family: 'Geist Mono', monospace; font-size: 14px;
 }
-.faq-item.open .qnum { background: var(--ink); color: #fff; border-color: var(--ink); }
+.faq-item[data-open="true"] .qnum { background: var(--ink); color: #fff; border-color: var(--ink); }
 .faq-item .q { font-size: 20px; font-weight: 500; letter-spacing: -0.01em; }
 .faq-item .a { color: var(--muted); font-size: 17px; line-height: 1.65; max-width: 48ch; }
 /* faq collapsed: handled by max-height transition */
@@ -1192,7 +1192,7 @@ body::before {
     max-height 0.46s cubic-bezier(0.16,1,0.3,1),
     opacity 0.26s ease 0.06s;
 }
-.faq-item.open .a {
+.faq-item[data-open="true"] .a {
   max-height: 600px; opacity: 1;
   transition:
     max-height 0.46s cubic-bezier(0.16,1,0.3,1),
@@ -3042,9 +3042,7 @@ function About() {
           </div>
           <div>
             <div className="reveal-clip"><p className="about-lede">
-              At {BRAND}, we build websites that <em>work for you while you sleep —</em>
-              every form a structured task, every reply a draft already in your inbox,
-              every customer routed through a system that thinks before you do.
+              At {BRAND}, we build websites that <em>work for you while you sleep</em> — turning every form into a structured task, every reply into a draft already in your inbox, and every customer interaction into a seamless, automated experience.
             </p></div>
             <div className="stats reveal">
               <div className="stat">
@@ -3243,9 +3241,10 @@ function FAQ() {
         {FAQS.map((f, i) => (
           <div
             key={i}
-            className={`faq-item reveal ${open === i ? "open" : "collapsed"}`}
+            className="faq-item reveal"
+            data-open={open === i}
             style={{ transitionDelay: `${i * 90}ms` }}
-            onClick={() => setOpen(open === i ? -1 : i)}
+            onClick={() => setOpen(i)}
           >
             <div className="qnum mono">{i + 1}</div>
             <div className="q">{f.q}</div>
