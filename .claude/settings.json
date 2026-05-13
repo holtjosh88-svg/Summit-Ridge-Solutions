@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "n8n-mcp": {
+      "type": "http",
+      "url": "https://jgholt.app.n8n.cloud/mcp-server/http",
+      "headers": {
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YzBkMzc1OS02YmFmLTRjNmUtYTVkMS02MmU1MTBkNTExNmIiLCJpc3MiOiJuOG4iLCJhdWQiOiJtY3Atc2VydmVyLWFwaSIsImp0aSI6ImFkZTMxNzkzLTc3MWEtNDcyYy1hMjk3LTcxZWQ2ZWIyN2JmOSIsImlhdCI6MTc3ODYzMzUxNX0.sjL8QEsT0fryWzJBl3Pz4JPEf2rl8daeUhUhemsA5V4"
+      }
+    }
+  }
+}
