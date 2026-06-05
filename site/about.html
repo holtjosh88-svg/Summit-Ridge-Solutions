@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>About — Summit Ridge Solutions</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content="We build websites that work for you while you sleep — turning every form into a structured task and every reply into a draft already in your inbox."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="styles.css"/>
+<style>
+/* ── About grid ─────────────────────────────────────── */
+.about-grid {
+  display:grid; grid-template-columns:1fr 1.5fr;
+  gap:clamp(40px,6vw,96px); align-items:start;
+}
+.about-visual {
+  aspect-ratio:1.1/1; background:var(--bg-2);
+  border-radius:var(--r-lg); position:relative;
+  overflow:hidden; display:grid;
+}
+.about-stat-grid {
+  display:grid; grid-template-columns:1fr 1fr;
+  grid-template-rows:1fr 1fr; width:100%; height:100%;
+}
+.about-stat {
+  padding:clamp(20px,3vw,32px); display:flex; flex-direction:column; justify-content:flex-end;
+  border-right:1px solid var(--rule); border-bottom:1px solid var(--rule);
+}
+.about-stat:nth-child(2) { border-right:0; }
+.about-stat:nth-child(3) { border-bottom:0; }
+.about-stat:nth-child(4) { border-right:0; border-bottom:0; }
+.about-stat-accent {
+  background:var(--accent-lo); border:1.5px solid rgba(200,150,60,.22);
+}
+.about-stat-num {
+  font-family:'Bricolage Grotesque',sans-serif; font-weight:800;
+  font-size:clamp(36px,4vw,54px); letter-spacing:-0.055em; line-height:1;
+  color:var(--ink);
+}
+.about-stat-num sup { color:var(--accent); font-size:.52em; vertical-align:top; line-height:1; }
+.about-stat-lbl {
+  font-family:'Geist Mono',monospace; font-size:10.5px; letter-spacing:.06em;
+  text-transform:uppercase; color:var(--muted); margin-top:8px;
+}
+.about-stat-tagline {
+  font-family:'Bricolage Grotesque',sans-serif; font-size:clamp(16px,1.6vw,20px);
+  font-weight:600; letter-spacing:-0.015em; color:var(--accent); line-height:1.3;
+}
+.about-year { font-family:'Geist Mono',monospace; font-size:12px; letter-spacing:.08em; color:var(--muted-2); margin-top:10px; }
+
+/* ── Process section ────────────────────────────────── */
+.process-strip {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  gap:0; margin-top:36px;
+}
+.process-step {
+  padding:28px 24px 24px 0; border-top:2px solid var(--rule);
+  padding-right:clamp(16px,2.5vw,32px);
+}
+.process-step:first-child { padding-left:0; }
+.process-num {
+  font-family:'Geist Mono',monospace; font-size:28px; font-weight:500;
+  color:var(--accent); letter-spacing:-.02em; line-height:1; margin-bottom:16px;
+  display:block;
+}
+.process-step h4 {
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:17px; font-weight:600; letter-spacing:-.015em; margin-bottom:8px;
+}
+.process-step p { font-size:14px; line-height:1.62; color:var(--muted); }
+.about-lede {
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(21px,2.1vw,30px); font-weight:500;
+  line-height:1.42; letter-spacing:-0.02em; margin-top:28px;
+}
+.about-lede em { font-style:normal; color:var(--muted); }
+
+/* ── Stats ──────────────────────────────────────────── */
+.stats {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  border-top:1px solid var(--rule);
+  margin-top:48px; padding-top:32px; gap:16px;
+}
+.stat-num {
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(44px,4.5vw,66px); font-weight:800;
+  letter-spacing:-0.055em; line-height:1;
+}
+.stat-num sup { color:var(--accent); font-size:.52em; vertical-align:top; line-height:1; }
+.stat-lbl { font-size:14px; color:var(--muted); margin-top:10px; line-height:1.45; }
+
+/* ── Values strip ───────────────────────────────────── */
+.values-strip {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:0; border:1.5px solid var(--rule); border-radius:var(--r);
+  overflow:hidden; margin-top:0;
+}
+.value-item {
+  padding:32px 28px; border-right:1.5px solid var(--rule);
+}
+.value-item:last-child { border-right:0; }
+.value-ico {
+  width:40px; height:40px; border-radius:10px;
+  background:var(--accent-lo); display:grid; place-items:center;
+  color:var(--accent); margin-bottom:16px;
+}
+.value-item h4 {
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:18px; font-weight:600; letter-spacing:-.015em; margin-bottom:8px;
+}
+.value-item p { font-size:15px; line-height:1.62; color:var(--muted); }
+
+/* ── Brands ─────────────────────────────────────────── */
+.brands-section { margin-top:0; }
+.brands-lbl { font-family:'Geist Mono',monospace; font-size:11px; color:var(--muted-2); letter-spacing:.06em; }
+.brands-lbl::before { content:"· "; }
+
+@media (max-width:960px) {
+  .about-grid { grid-template-columns:1fr; }
+  .about-visual { aspect-ratio:1.6/1; }
+  .values-strip { grid-template-columns:1fr; }
+  .value-item { border-right:0; border-bottom:1.5px solid var(--rule); }
+  .value-item:last-child { border-bottom:0; }
+  .stats { grid-template-columns:1fr 1fr; }
+  .process-strip { grid-template-columns:1fr 1fr; }
+  .process-step { padding-right:20px; }
+  .process-step:nth-child(2) { border-left:0; }
+  .process-step:nth-child(3),.process-step:nth-child(4) { border-top-color:transparent; padding-top:20px; }
+}
+@media (max-width:600px) {
+  .stats { grid-template-columns:1fr 1fr; }
+  .about-visual { aspect-ratio:1.2/1; }
+  .process-strip { grid-template-columns:1fr; }
+  .process-step { padding-right:0; border-top:2px solid var(--rule); }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ════════════════════════════════════════ -->
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="index.html">
+      <svg class="brand-mark" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+        <circle cx="15" cy="4.5" r="3" fill="currentColor"/>
+        <circle cx="4.5" cy="24" r="3" fill="currentColor"/>
+        <circle cx="25.5" cy="24" r="3" fill="currentColor"/>
+        <path d="M15 7.5L6 21.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M15 7.5L24 21.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        <path d="M7.5 24H22.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      Summit Ridge Solutions
+    </a>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="services.html">Services</a>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <button class="nav-menu-btn" id="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="nav-drawer">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-cta">
+      <a href="contact.html" class="btn btn-dark">
+        <span>Start a project</span>
+        <span class="arr">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<div class="nav-drawer" id="nav-drawer" aria-hidden="true">
+  <a href="index.html">Home</a>
+  <a href="services.html">Services</a>
+  <a href="about.html" class="active">About</a>
+  <a href="contact.html">Contact</a>
+  <a href="contact.html" class="btn">
+    <span>Start a project</span>
+    <span class="arr"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+  </a>
+</div>
+
+<!-- ═══ PAGE HERO ════════════════════════════════════ -->
+<div class="page-hero">
+  <div class="wrap">
+    <div class="page-hero-inner">
+      <span class="label">About us</span>
+      <h1 class="display-md reveal" style="margin-top:14px">We build systems,<br>not just sites</h1>
+      <p style="margin-top:18px;color:var(--muted);font-size:18px;line-height:1.65;max-width:48ch" class="reveal">
+        Summit Ridge Solutions is a boutique web &amp; automation studio. We hand-build websites and wire them to the tools teams already use.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ABOUT GRID ════════════════════════════════════ -->
+<section class="tight">
+  <div class="wrap">
+    <div class="about-grid">
+      <div>
+        <span class="label">Our story</span>
+        <div class="about-year mono">EST. 2026</div>
+        <div class="about-visual reveal">
+          <div class="about-stat-grid">
+            <div class="about-stat">
+              <div class="about-stat-num">120<sup>+</sup></div>
+              <div class="about-stat-lbl">Sites shipped</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-num">7<sup>D</sup></div>
+              <div class="about-stat-lbl">Avg. to launch</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-num">40<sup>+</sup></div>
+              <div class="about-stat-lbl">n8n flows live</div>
+            </div>
+            <div class="about-stat about-stat-accent">
+              <div class="about-stat-tagline">No lock-in,<br>ever.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <p class="about-lede reveal">
+          At Summit Ridge Solutions, we build websites that <em>work for you while you sleep</em> — turning every form into a structured task, every reply into a draft already in your inbox, and every customer interaction into a seamless, automated experience.
+        </p>
+        <p style="margin-top:24px;color:var(--muted);font-size:17px;line-height:1.65" class="reveal">
+          We believe the best client work happens when the boring stuff is invisible. Intake forms shouldn't live in email threads. Quotes shouldn't require a spreadsheet. Follow-ups shouldn't depend on someone remembering to check their inbox.
+        </p>
+        <p style="margin-top:18px;color:var(--muted);font-size:17px;line-height:1.65" class="reveal">
+          So we build websites that connect directly to Notion, n8n, and Claude — then hand you the keys.
+        </p>
+
+        <div class="stats reveal" id="stats-countup">
+          <div class="stat">
+            <div class="stat-num mono"><span data-count="120">120</span><sup>+</sup></div>
+            <div class="stat-lbl">Sites shipped on Vercel &amp; GitHub</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num mono"><span data-count="7">7</span><sup>D</sup></div>
+            <div class="stat-lbl">Average time to launch</div>
+          </div>
+          <div class="stat">
+            <div class="stat-num mono"><span data-count="40">40</span><sup>+</sup></div>
+            <div class="stat-lbl">n8n flows in production</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ VALUES ════════════════════════════════════════ -->
+<section class="tight">
+  <div class="wrap">
+    <span class="label">How we work</span>
+    <h2 class="display-sm reveal" style="margin-top:14px;margin-bottom:32px">Three things we never compromise on</h2>
+    <div class="values-strip reveal">
+      <div class="value-item">
+        <div class="value-ico">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 3l8 3v6c0 4.5-3.4 8.4-8 9-4.6-.6-8-4.5-8-9V6l8-3z" stroke-linejoin="round"/><path d="M9 12l2.2 2.2L15.5 10" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h4>You own the code</h4>
+        <p>Everything we write goes to your GitHub repo. No proprietary CMS, no hosting lock-in, no "you'll need us to make changes."</p>
+      </div>
+      <div class="value-item">
+        <div class="value-ico">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 17H5a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3M13 21l4-4m0 0l4 4m-4-4v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h4>Fixed-price, no surprises</h4>
+        <p>We scope every project in a 30-minute call and quote a flat rate upfront. If we miscalculate scope, that's on us — not on your invoice.</p>
+      </div>
+      <div class="value-item">
+        <div class="value-ico">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 3.5" stroke-linecap="round"/></svg>
+        </div>
+        <h4>Response within 24 hours</h4>
+        <p>Every message gets a reply the same business day. Our own AI automation handles the inbox, so nothing falls through the cracks.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PROCESS ════════════════════════════════════════ -->
+<section class="tight">
+  <div class="wrap">
+    <span class="label">How it works</span>
+    <h2 class="display-sm reveal" style="margin-top:14px">From first call to live site</h2>
+    <div class="process-strip">
+      <div class="process-step reveal">
+        <span class="process-num">01</span>
+        <h4>30-min scoping call</h4>
+        <p>We map what's manual, what's urgent, and what would free up your week.</p>
+      </div>
+      <div class="process-step reveal reveal-d1">
+        <span class="process-num">02</span>
+        <h4>Flat-rate quote in 24h</h4>
+        <p>One number, no hourly billing, no scope creep surprises.</p>
+      </div>
+      <div class="process-step reveal reveal-d2">
+        <span class="process-num">03</span>
+        <h4>7-day build sprint</h4>
+        <p>Site and automations built, tested, and staged for your review.</p>
+      </div>
+      <div class="process-step reveal reveal-d3">
+        <span class="process-num">04</span>
+        <h4>Full handoff</h4>
+        <p>Your GitHub repo, your Vercel, your n8n. We hand over the keys.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ══════════════════════════════════ -->
+<section>
+  <div class="wrap">
+    <span class="label">From the founder</span>
+    <h2 class="display-sm reveal" style="margin-top:14px">Our promise to every client</h2>
+    <div class="tst">
+      <div>
+        <p class="tst-label">Words from the ones who know us best</p>
+        <div class="tst-pct mono">+99<sup>%</sup></div>
+        <div class="tst-pct-lbl">Reply within 24h, every weekday</div>
+      </div>
+      <div>
+        <div class="tst-quote reveal">
+          "From first click to signed contract, we handle the whole pipeline
+          so our clients never chase a lead again."
+        </div>
+        <div class="tst-foot">
+          <div class="tst-author">
+            <div class="avatar"></div>
+            <div>
+              <div class="tst-name">Josh Holt</div>
+              <div class="tst-role">Owner, Summit Ridge Solutions</div>
+            </div>
+          </div>
+          <button class="soc-btn" aria-label="Open on X">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.4L4.5 21H1.5l7.4-8.6L1 3h6.5l4.5 5.9L17.5 3z"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="brands-section" style="margin-top:56px">
+      <div class="brands-lbl">Tools we ship on</div>
+      <div class="brand-row">
+        <div class="brand-tile">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          Vercel
+        </div>
+        <div class="brand-tile muted">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-1.5 14.5v-9l7 4.5-7 4.5z"/></svg>
+          n8n
+        </div>
+        <div class="brand-tile">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+          Notion
+        </div>
+        <div class="brand-tile muted">
+          <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 1.5C6.2 1.5 1.5 6.2 1.5 12c0 4.6 3 8.6 7.2 10 .5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.4-3.5-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.6 2.5 1.1 3.1.9.1-.7.4-1.1.6-1.4-2.3-.3-4.7-1.1-4.7-5 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 2.9 1.1.8-.2 1.7-.3 2.6-.3.9 0 1.8.1 2.6.3 2-1.4 2.9-1.1 2.9-1.1.6 1.5.2 2.6.1 2.9.7.7 1.1 1.7 1.1 2.7 0 3.9-2.4 4.7-4.7 5 .4.3.7 1 .7 1.9v2.8c0 .3.2.6.7.5 4.2-1.4 7.2-5.4 7.2-10C22.5 6.2 17.8 1.5 12 1.5z"/></svg>
+          GitHub
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FINAL CTA ══════════════════════════════════════ -->
+<section class="tight">
+  <div class="wrap">
+    <div class="final">
+      <div class="final-left">
+        <div>
+          <h2 class="display-md">Work with us</h2>
+          <p>We're a small studio that takes a small number of projects. Tell us what you're building — we'll tell you if we're a fit.</p>
+        </div>
+        <a href="contact.html" class="btn">
+          <span>Start a project</span>
+          <span class="arr"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </a>
+      </div>
+      <div class="final-right">
+        <div class="final-grid"></div>
+        <div class="final-window"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FOOTER ════════════════════════════════════════ -->
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <div>
+        <h3 class="foot-tagline">Let's wire up your next project</h3>
+        <a href="mailto:hello@summitridge.studio" class="foot-email-cta">
+          hello@summitridge.studio
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+      <div>
+        <div class="foot-contact-lbl">Contact</div>
+        <div class="foot-contact-val">hello@summitridge.studio</div>
+        <div class="foot-contact-lbl" style="margin-top:18px">Office hours</div>
+        <div class="foot-contact-val">Mon — Fri, 09:00 — 18:00 PT</div>
+      </div>
+      <div class="foot-cols">
+        <div>
+          <div class="foot-col-lbl">Studio</div>
+          <nav class="foot-links">
+            <a href="services.html">Services</a>
+            <a href="about.html">About</a>
+            <a href="contact.html">Start a project</a>
+          </nav>
+        </div>
+        <div>
+          <div class="foot-col-lbl">Quick links</div>
+          <nav class="foot-links">
+            <a href="services.html#faq">FAQ</a>
+            <a href="contact.html">Get a quote</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <div class="foot-brand">
+        <svg viewBox="0 0 30 30" fill="none" aria-hidden="true">
+          <circle cx="15" cy="4.5" r="3" fill="currentColor"/>
+          <circle cx="4.5" cy="24" r="3" fill="currentColor"/>
+          <circle cx="25.5" cy="24" r="3" fill="currentColor"/>
+          <path d="M15 7.5L6 21.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M15 7.5L24 21.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+          <path d="M7.5 24H22.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        Summit Ridge Solutions
+      </div>
+      <div class="foot-legal">
+        <span>© 2026 Summit Ridge Solutions. All rights reserved.</span>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+      <div class="socials">
+        <a href="#" aria-label="X"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M17.5 3h3l-7 8 8.2 10h-6.4l-5-6.4L4.5 21H1.5l7.4-8.6L1 3h6.5l4.5 5.9L17.5 3z"/></svg></a>
+        <a href="#" aria-label="LinkedIn"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M4.5 3a1.7 1.7 0 100 3.4 1.7 1.7 0 000-3.4zM3 8.5h3v12H3v-12zm6 0h2.9v1.6c.4-.8 1.5-1.9 3.5-1.9 3.7 0 4.4 2.4 4.4 5.5v6.8h-3v-6c0-1.4 0-3.3-2-3.3s-2.4 1.6-2.4 3.2v6.1H9v-12z"/></svg></a>
+        <a href="#" aria-label="GitHub"><svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 1.5C6.2 1.5 1.5 6.2 1.5 12c0 4.6 3 8.6 7.2 10 .5.1.7-.2.7-.5v-1.8c-2.9.6-3.5-1.4-3.5-1.4-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1.1 1.6 1.1.9 1.6 2.5 1.1 3.1.9.1-.7.4-1.1.6-1.4-2.3-.3-4.7-1.1-4.7-5 0-1.1.4-2 1.1-2.7-.1-.3-.5-1.4.1-2.9 0 0 .9-.3 2.9 1.1.8-.2 1.7-.3 2.6-.3.9 0 1.8.1 2.6.3 2-1.4 2.9-1.1 2.9-1.1.6 1.5.2 2.6.1 2.9.7.7 1.1 1.7 1.1 2.7 0 3.9-2.4 4.7-4.7 5 .4.3.7 1 .7 1.9v2.8c0 .3.2.6.7.5 4.2-1.4 7.2-5.4 7.2-10C22.5 6.2 17.8 1.5 12 1.5z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const toggle = document.getElementById('nav-toggle');
+const drawer = document.getElementById('nav-drawer');
+toggle.addEventListener('click', () => {
+  const open = toggle.getAttribute('aria-expanded') === 'true';
+  toggle.setAttribute('aria-expanded', String(!open));
+  toggle.setAttribute('aria-label', !open ? 'Close menu' : 'Open menu');
+  toggle.classList.toggle('open');
+  drawer.classList.toggle('open');
+  drawer.setAttribute('aria-hidden', String(open));
+  document.body.classList.toggle('nav-open');
+});
+drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+  toggle.setAttribute('aria-expanded','false');
+  toggle.setAttribute('aria-label','Open menu');
+  toggle.classList.remove('open');
+  drawer.classList.remove('open');
+  drawer.setAttribute('aria-hidden','true');
+  document.body.classList.remove('nav-open');
+}));
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -4% 0px' });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+const statsSection = document.getElementById('stats-countup');
+if (statsSection) {
+  function countUp(el, target, duration) {
+    const start = performance.now();
+    (function step(now) {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(eased * target);
+      if (t < 1) requestAnimationFrame(step);
+    })(start);
+  }
+  const statsObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        statsSection.querySelectorAll('[data-count]').forEach(el => {
+          countUp(el, parseInt(el.dataset.count, 10), 1400);
+        });
+        statsObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.4 });
+  statsObserver.observe(statsSection);
+}
+
+let lastY = 0;
+const nav = document.querySelector('.nav');
+window.addEventListener('scroll', () => {
+  if (document.body.classList.contains('nav-open')) return;
+  const y = window.scrollY;
+  if (y < 80) nav.style.transform = '';
+  else if (y > lastY + 6) nav.style.transform = 'translateY(-100%)';
+  else if (y < lastY - 6) nav.style.transform = '';
+  lastY = y;
+}, { passive: true });
+</script>
+</body>
+</html>
